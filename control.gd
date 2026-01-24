@@ -1,22 +1,21 @@
 extends Control
 
-# TODO: Update to match your plugin's name
-var _plugin_name = "BattteryPlugin"
-var _android_plugin
+#var _plugin_name = "BattteryPlugin"
+#var _android_plugin
 
 func _ready():
 	Globals.updated_data.connect(refresh_UI)
 	$UIRefresh.timeout.connect(refresh_UI)
 	refresh_data()
-	print(Engine.has_singleton(_plugin_name))
-	if Engine.has_singleton(_plugin_name):
-		_android_plugin = Engine.get_singleton(_plugin_name)
-		_android_plugin.requestHomeRole()
-	else:
-		printerr("Couldn't find plugin " + _plugin_name)
-	if _android_plugin != null:
-		refresh_battery()
-		$BatteryRefresh.timeout.connect(refresh_battery)
+	#print(Engine.has_singleton(_plugin_name))
+	#if Engine.has_singleton(_plugin_name):
+		#_android_plugin = Engine.get_singleton(_plugin_name)
+		#_android_plugin.requestHomeRole()
+	#else:
+		#printerr("Couldn't find plugin " + _plugin_name)
+	#if _android_plugin != null:
+		#refresh_battery()
+		#$BatteryRefresh.timeout.connect(refresh_battery)
 
 
 
@@ -60,32 +59,34 @@ func refresh_UI():
 	for i in range(next_three.size()):
 		print("Minutes to first: ", calculate_time(Time.get_datetime_dict_from_system(), next_three[i]))
 		get_node(str(i+1)).text = "%d minut, %s:%s" % [calculate_time(Time.get_datetime_dict_from_system(), next_three[i]), handle_time_number(next_three[i].hour), handle_time_number(next_three[i].minute)]
-func refresh_battery():
-	if _android_plugin != null:
-		var percent = _android_plugin.getBatteryPercentage()
-		$bateria.text = str(int(percent)) + "%"
-		
-		match _android_plugin.getBatteryStatus():
-			"discharging":
-				change_color(Color.CRIMSON)
-				change_percent(Color.CRIMSON)
-				$ladowanie.text = "Rozładowuje"
-			"charging":
-				change_color(Color.GREEN)
-				change_percent(Color.GREEN)
-				$ladowanie.text = "Ładuje..."
-			"full":
-				change_color(Color.CHARTREUSE)
-				change_percent(Color.CHARTREUSE)
-				$ladowanie.text = "Pełny"
-			"not_charging":
-				change_color(Color.ORANGE)
-				change_percent(Color.ORANGE)
-				$ladowanie.text = "Nie ładuje"
-			"unknown":
-				change_color(Color.RED)
-				change_percent(Color.RED)
-				$ladowanie.text = "NIEZNANY"
+		get_node("time").text = get_current_time()
+
+#func refresh_battery():
+	#if _android_plugin != null:
+		#var percent = _android_plugin.getBatteryPercentage()
+		#$bateria.text = str(int(percent)) + "%"
+		#
+		#match _android_plugin.getBatteryStatus():
+			#"discharging":
+				#change_color(Color.CRIMSON)
+				#change_percent(Color.CRIMSON)
+				#$ladowanie.text = "Rozładowuje"
+			#"charging":
+				#change_color(Color.GREEN)
+				#change_percent(Color.GREEN)
+				#$ladowanie.text = "Ładuje..."
+			#"full":
+				#change_color(Color.CHARTREUSE)
+				#change_percent(Color.CHARTREUSE)
+				#$ladowanie.text = "Pełny"
+			#"not_charging":
+				#change_color(Color.ORANGE)
+				#change_percent(Color.ORANGE)
+				#$ladowanie.text = "Nie ładuje"
+			#"unknown":
+				#change_color(Color.RED)
+				#change_percent(Color.RED)
+				#$ladowanie.text = "NIEZNANY"
 				
 func change_color(color: Color):
 	$ladowanie.theme.set_color("default_color", "RichTextLabel", color)
@@ -105,6 +106,10 @@ func refresh_data():
 	print("todays time", todays_time)
 	var request_url = "https://live.mpk.czest.pl/api/locations/87933cc4-3afd-4138-9c7f-095bbf6ddf30/timetables/%d/%d/%d" % [todays_time.year, todays_time.month, todays_time.day]
 	$HTTPRequest.request(request_url)
+
+func get_current_time():
+	var time = Time.get_datetime_dict_from_system()
+	return str(time.hour) + ":" + str(time.minute) 
 
 func calculate_time(first_time: Dictionary, second_time: Dictionary) -> int:
 	var first_time_unix = Time.get_unix_time_from_datetime_dict(first_time)

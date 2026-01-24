@@ -19,21 +19,20 @@ script = ExtResource("1_0fbet")
 
 [node name="3" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_left = 14.0
-offset_top = 685.0
-offset_right = 1814.0
-offset_bottom = 1005.0
+offset_left = 10.0
+offset_top = 418.0
+offset_right = 1432.0
+offset_bottom = 738.0
 theme = ExtResource("2_62e2m")
-text = "{bus}"
+text = "{bus3}"
 
 [node name="1" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_left = 14.0
-offset_top = 13.0
-offset_right = 1814.0
-offset_bottom = 333.0
+offset_left = 4.0
+offset_right = 1440.0
+offset_bottom = 319.0
 theme = ExtResource("2_62e2m")
-text = "{bus}"
+text = "{bus1}"
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
@@ -50,31 +49,42 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.022
 anchor_bottom = 2.778
-offset_left = 14.0
-offset_top = 333.0
-offset_right = -222.0
-offset_bottom = -2640.6
+offset_left = 10.0
+offset_top = 192.0
+offset_right = -31.679932
+offset_bottom = -1915.2002
 theme = ExtResource("2_62e2m")
-text = "{bus}`"
+text = "{bus2}"
 
 [node name="bateria" type="RichTextLabel" parent="."]
-offset_left = 1496.0
-offset_top = 898.0
-offset_right = 3296.0
-offset_bottom = 1218.0
+layout_mode = 0
+offset_left = 2259.0
+offset_top = 47.0
+offset_right = 4059.0
+offset_bottom = 367.0
 theme = ExtResource("3_qtu10")
 text = "{}%"
 
 [node name="ladowanie" type="RichTextLabel" parent="."]
-offset_left = 7.0
-offset_top = 894.0
-offset_right = 1807.0
-offset_bottom = 1214.0
+layout_mode = 0
+offset_left = -335.0
+offset_top = 1100.0
+offset_right = 1465.0
+offset_bottom = 1420.0
 theme = SubResource("Theme_qtu10")
 text = "{status}"
 
 [node name="BatteryRefresh" type="Timer" parent="."]
 autostart = true
+
+[node name="time" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 761.0
+offset_top = 585.0
+offset_right = 2561.0
+offset_bottom = 905.0
+theme = ExtResource("3_qtu10")
+text = "{time}"
 
 [connection signal="request_completed" from="HTTPRequest" to="." method="request_completed"]
 [connection signal="timeout" from="TableRefresher" to="." method="refresh_data"]

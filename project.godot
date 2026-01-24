@@ -13,6 +13,7 @@ config_version=5
 config/name="Tabler"
 run/main_scene="uid://dn0kv76vqeqmi"
 config/features=PackedStringArray("4.5", "Mobile")
+run/low_processor_mode=true
 config/icon="res://icon.svg"
 
 [autoload]
@@ -21,13 +22,15 @@ Globals="*res://Globals.gd"
 
 [display]
 
-window/size/viewport_width=2000
-window/size/viewport_height=1200
+window/size/viewport_width=1440
+window/size/viewport_height=900
+window/size/mode=3
 window/stretch/mode="canvas_items"
 
 [rendering]
 
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 2d/snap/snap_2d_transforms_to_pixel=true
