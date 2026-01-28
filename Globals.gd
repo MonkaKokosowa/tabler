@@ -2,17 +2,15 @@ extends Node
 
 signal updated_data
 
+var MainlineEntry: LineEntry
+
+# Applies the system timezone offset to a datetime dictionary.
 func apply_timezone_offset(datetime_dict: Dictionary) -> Dictionary:
-	# Convert the datetime dictionary to a Unix timestamp
-	var unix_time = Time.get_unix_time_from_datetime_dict(datetime_dict)
-
-	# Apply the timezone offset (convert minutes to seconds)
+	var unix_time: int = Time.get_unix_time_from_datetime_dict(datetime_dict)
 	unix_time += Time.get_time_zone_from_system().bias * 60
-
-	# Convert back to a datetime dictionary
 	return Time.get_datetime_dict_from_unix_time(unix_time)
-# TimetableEntry class
 
+# --- Inner Classes ---
 
 class TimetableEntry:
 	var dateTime: Dictionary
@@ -20,73 +18,60 @@ class TimetableEntry:
 	var vehicleID: String
 	var direction: String
 
-
 	func _init(data: Dictionary) -> void:
-		dateTime = Globals.apply_timezone_offset(Time.get_datetime_dict_from_datetime_string(data.get("dateTime", ""), false))
+		# Parse date string, then offset time
+		var raw_date = Time.get_datetime_dict_from_datetime_string(data.get("dateTime", ""), false)
+		dateTime = Globals.apply_timezone_offset(raw_date)
+		
 		runID = data.get("runID", "")
-		if data.has("vehicleID") and data.get("vehicleID") != null:
-			vehicleID = data.get("vehicleID")
+		direction = data.get("direction", "")
+		
+		# Safer check for vehicleID
+		var v_id = data.get("vehicleID")
+		if v_id != null:
+			vehicleID = str(v_id)
 		else:
 			vehicleID = "NONE"
-		direction = data.get("direction", "")
 
-
-# LineEntry class
 class LineEntry:
 	var lineID: String
 	var locationID: String
 	var day: Dictionary
-	var timetable: Array[TimetableEntry]
+	var timetable: Array[TimetableEntry] = []
 
 	func _init(data: Dictionary) -> void:
 		lineID = data.get("lineID", "")
 		locationID = data.get("locationID", "")
-		day = Globals.apply_timezone_offset(Time.get_datetime_dict_from_datetime_string(data.get("day", ""), false))
-		timetable = []
+		
+		var raw_day = Time.get_datetime_dict_from_datetime_string(data.get("day", ""), false)
+		day = Globals.apply_timezone_offset(raw_day)
+		
 		var tt_array = data.get("timetable", [])
-		for tt_data in tt_array:
-			timetable.append(TimetableEntry.new(tt_data))
-			
-var MainlineEntry: LineEntry
+		if tt_array is Array:
+			for tt_data in tt_array:
+				timetable.append(TimetableEntry.new(tt_data))
 
-func datetime_array_from_timetable_entry_array(timetable_array: Array[TimetableEntry]) -> Array[Dictionary]:
-	var new_array: Array[Dictionary] = []
-	for entry in timetable_array:
-		new_array.append(entry.dateTime)
-		
-	return new_array
-	
+# --- Helper Functions ---
+
 # Returns an array of the 3 datetime dictionaries that are in the future (closest first)
-func get_next_three_datetimes(times: Array[TimetableEntry], current_datetime: Dictionary = Time.get_datetime_dict_from_system(false)) -> Array:
-	var current_ts = Time.get_unix_time_from_datetime_dict(current_datetime)
-	var future_times = []
+func get_next_three_datetimes(times: Array[TimetableEntry], current_datetime: Dictionary = Time.get_datetime_dict_from_system(false)) -> Array[Dictionary]:
+	var current_ts: int = Time.get_unix_time_from_datetime_dict(current_datetime)
+	var future_timestamps: Array[int] = []
 	
-	# Filter only the datetime dicts that are in the future.
-	for dt in datetime_array_from_timetable_entry_array(times):
-		var dt_ts = Time.get_unix_time_from_datetime_dict(dt)
-		if dt_ts > current_ts:
-			future_times.append(dt_ts)
+	# 1. Convert to Unix and Filter
+	for entry in times:
+		var entry_ts: int = Time.get_unix_time_from_datetime_dict(entry.dateTime)
+		if entry_ts > current_ts:
+			future_timestamps.append(entry_ts)
 	
-	## Sort future_times by their Unix timestamp (ascending order)
-	#future_times.sort_custom(_compare_datetime_dicts)
-	future_times.sort()
-	# Get at most the first 3 items
-	var result = []
-	for i in range(min(3, future_times.size())):
-		result.append(future_times[i])
-		
-	for i in range(result.size()):
-		result[i] = Time.get_datetime_dict_from_unix_time(result[i])
+	# 2. Sort integers
+	future_timestamps.sort()
+	
+	# 3. Slice top 3 and convert back to Dictionaries
+	var result: Array[Dictionary] = []
+	var limit: int = min(3, future_timestamps.size())
+	
+	for i in range(limit):
+		result.append(Time.get_datetime_dict_from_unix_time(future_timestamps[i]))
 		
 	return result
-
-# Custom sort function to compare datetime dictionaries based on their Unix timestamps.
-func _compare_datetime_dicts(a: Dictionary, b: Dictionary) -> int:
-	var ts_a = Time.get_unix_time_from_datetime_dict(a)
-	var ts_b = Time.get_unix_time_from_datetime_dict(b)
-	if ts_a < ts_b:
-		return -1
-	elif ts_a > ts_b:
-		return 1
-	else:
-		return 0

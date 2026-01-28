@@ -4,10 +4,6 @@
 [ext_resource type="Theme" uid="uid://cih2hdkhuqdua" path="res://bus_theme.tres" id="2_62e2m"]
 [ext_resource type="Theme" uid="uid://bwriwfn6st5nu" path="res://battery_theme.tres" id="3_qtu10"]
 
-[sub_resource type="Theme" id="Theme_qtu10"]
-default_font_size = 226
-RichTextLabel/colors/default_color = Color(0, 0.74, 0.234333, 1)
-
 [node name="Control" type="Control" unique_id=340150226]
 layout_mode = 3
 anchors_preset = 15
@@ -29,8 +25,8 @@ text = "{bus3}"
 [node name="1" type="RichTextLabel" parent="." unique_id=548154609]
 layout_mode = 0
 offset_left = 4.0
-offset_right = 1440.0
-offset_bottom = 319.0
+offset_right = 1403.0
+offset_bottom = 642.0
 theme = ExtResource("2_62e2m")
 text = "{bus1}"
 
@@ -55,24 +51,6 @@ offset_right = -31.679932
 offset_bottom = -1915.2002
 theme = ExtResource("2_62e2m")
 text = "{bus2}"
-
-[node name="bateria" type="RichTextLabel" parent="." unique_id=934739372]
-layout_mode = 0
-offset_left = 2259.0
-offset_top = 47.0
-offset_right = 4059.0
-offset_bottom = 367.0
-theme = ExtResource("3_qtu10")
-text = "{}%"
-
-[node name="ladowanie" type="RichTextLabel" parent="." unique_id=1370769585]
-layout_mode = 0
-offset_left = -335.0
-offset_top = 1100.0
-offset_right = 1465.0
-offset_bottom = 1420.0
-theme = SubResource("Theme_qtu10")
-text = "{status}"
 
 [node name="BatteryRefresh" type="Timer" parent="." unique_id=863229253]
 autostart = true
