@@ -109,7 +109,7 @@ func refresh_data():
 
 func get_current_time():
 	var time = Time.get_datetime_dict_from_system()
-	return str(time.hour) + ":" + str(time.minute) 
+	return handle_time_number(time.hour) + ":" + handle_time_number(time.minute)
 
 func calculate_time(first_time: Dictionary, second_time: Dictionary) -> int:
 	var first_time_unix = Time.get_unix_time_from_datetime_dict(first_time)

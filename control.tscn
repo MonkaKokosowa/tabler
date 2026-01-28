@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dn0kv76vqeqmi"]
+[gd_scene format=3 uid="uid://dn0kv76vqeqmi"]
 
 [ext_resource type="Script" uid="uid://4dw3fedncoru" path="res://control.gd" id="1_0fbet"]
 [ext_resource type="Theme" uid="uid://cih2hdkhuqdua" path="res://bus_theme.tres" id="2_62e2m"]
@@ -8,7 +8,7 @@
 default_font_size = 226
 RichTextLabel/colors/default_color = Color(0, 0.74, 0.234333, 1)
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=340150226]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,7 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0fbet")
 
-[node name="3" type="RichTextLabel" parent="."]
+[node name="3" type="RichTextLabel" parent="." unique_id=56456740]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 418.0
@@ -26,7 +26,7 @@ offset_bottom = 738.0
 theme = ExtResource("2_62e2m")
 text = "{bus3}"
 
-[node name="1" type="RichTextLabel" parent="."]
+[node name="1" type="RichTextLabel" parent="." unique_id=548154609]
 layout_mode = 0
 offset_left = 4.0
 offset_right = 1440.0
@@ -34,17 +34,17 @@ offset_bottom = 319.0
 theme = ExtResource("2_62e2m")
 text = "{bus1}"
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=1157590596]
 
-[node name="TableRefresher" type="Timer" parent="."]
+[node name="TableRefresher" type="Timer" parent="." unique_id=1484676002]
 wait_time = 21600.0
 autostart = true
 
-[node name="UIRefresh" type="Timer" parent="."]
+[node name="UIRefresh" type="Timer" parent="." unique_id=1389782577]
 wait_time = 60.0
 autostart = true
 
-[node name="2" type="RichTextLabel" parent="."]
+[node name="2" type="RichTextLabel" parent="." unique_id=2057040146]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.022
@@ -56,7 +56,7 @@ offset_bottom = -1915.2002
 theme = ExtResource("2_62e2m")
 text = "{bus2}"
 
-[node name="bateria" type="RichTextLabel" parent="."]
+[node name="bateria" type="RichTextLabel" parent="." unique_id=934739372]
 layout_mode = 0
 offset_left = 2259.0
 offset_top = 47.0
@@ -65,7 +65,7 @@ offset_bottom = 367.0
 theme = ExtResource("3_qtu10")
 text = "{}%"
 
-[node name="ladowanie" type="RichTextLabel" parent="."]
+[node name="ladowanie" type="RichTextLabel" parent="." unique_id=1370769585]
 layout_mode = 0
 offset_left = -335.0
 offset_top = 1100.0
@@ -74,10 +74,10 @@ offset_bottom = 1420.0
 theme = SubResource("Theme_qtu10")
 text = "{status}"
 
-[node name="BatteryRefresh" type="Timer" parent="."]
+[node name="BatteryRefresh" type="Timer" parent="." unique_id=863229253]
 autostart = true
 
-[node name="time" type="RichTextLabel" parent="."]
+[node name="time" type="RichTextLabel" parent="." unique_id=585398654]
 layout_mode = 0
 offset_left = 761.0
 offset_top = 585.0
